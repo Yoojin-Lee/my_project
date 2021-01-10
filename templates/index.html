@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-latest.min.js" type="application/javascript"></script>
+    <script type="application/javascript"
+            src="https://zelkun.tistory.com/attachment/cfile8.uf@99BB7A3D5D45C065343307.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;900&display=swap" rel="stylesheet">
+
+    <title>우리 동네 붕어빵</title>
+
+    <style>
+        * {
+            font-family: 'Noto Sans KR', sans-serif;
+        }
+
+        p.title {
+            font-weight: 900;
+            font-size: 48px;
+        }
+
+        p.sub {
+            font-weight: 400;
+        }
+
+        select {
+            height: 30px;
+            margin-top: 10px;
+        }
+
+        .wrap {
+            margin: auto;
+            width: 900px;
+
+        }
+
+        .title-wrap {
+            margin-top: 180px;
+            padding-bottom: 50px;
+
+        }
+
+        .buttons {
+            margin: auto;
+        }
+
+        #info-box {
+            width: 385px;
+            margin: 10px auto;
+            padding: 50px;
+            border: lightgray solid;
+            border-width: thin;
+            border-radius: 5px;
+        }
+
+        .card {
+            margin: auto;
+            margin-bottom: 20px;
+        }
+
+
+    </style>
+
+    <script>
+        // $(document).ready(function () {
+        //     //sido option 추가
+        //     $.each(hangjungdong.sido, function (idx, code) {
+        //         //append를 이용하여 option 하위에 붙여넣음
+        //         $('#sido').append(fn_option(code.sido, code.codeNm));
+        //     });
+        //
+        //     //sido 변경시 시군구 option 추가
+        //     $('#sido').change(function () {
+        //         $('#sigugun').show();
+        //         $('#sigugun').empty();
+        //         $('#sigugun').append(fn_option('', '선택')); //
+        //         $.each(hangjungdong.sigugun, function (idx, code) {
+        //             if ($('#sido > option:selected').val() == code.sido)
+        //                 $('#sigugun').append(fn_option(code.sigugun, code.codeNm));
+        //         });
+        //
+        //         //세종특별자치시 예외처리
+        //         //옵션값을 읽어 비교
+        //         if ($('#sido option:selected').val() == '36') {
+        //             $('#sigugun').hide();
+        //             //index를 이용해서 selected 속성(attr)추가
+        //             //기본 선택 옵션이 최상위로 index 0을 가짐
+        //             $('#sigugun option:eq(1)').attr('selected', 'selected');
+        //             //trigger를 이용해 change 실행
+        //             $('#sigugun').trigger('change');
+        //         }
+        //     });
+        //
+        // });
+        //
+        //
+        // function fn_option(code, name) {
+        //     return '<option value="' + code + '">' + name + '</option>';
+        // }
+
+        $(document).ready(function () {
+            // $("#card-box").html("");
+            showBbang();
+        })
+
+        function openClose() {
+            if ($("#info-box").css("display") == "block") {
+                $("#info-box").hide();
+                $("#btn-info-box").text("붕어빵 위치 추가하기");
+            } else {
+                $("#info-box").show();
+                $("#btn-info-box").text("창 닫기");
+            }
+        }
+
+        function makeBbang() {
+            let address = $('#info-address').val();
+            let taste = $('#info-taste').val();
+            let detail = $('#info-detail').val();
+            if (address == '') {
+                alert('상세 주소를 입력해주세요.');
+                $('#info-address').focus();
+                return
+            } else if (taste == '') {
+                alert('맛/가격 정보를 입력해주세요.');
+                $('#info-taste').focus();
+                return
+            } else if (detail == '') {
+                alert('더 알려주실 기타 정보는 없으신가요:)');
+                $('#info-detail').focus();
+                return
+            }
+
+            $.ajax({
+                type: 'POST',
+                url: '/bbang',
+                data: {address_give: address, taste_give: taste, detail_give: detail},
+                success: function (response) {
+                    alert(response['msg']);
+                    window.location.reload();
+                }
+            })
+        }
+
+        function showBbang() {
+            $.ajax({
+                type: 'GET',
+                url: '/bbang',
+                data: {},
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        let bbangs = response['bbang_list']
+                        for (i = 0; i < bbangs.length; i++) {
+                            makeCard(bbangs[i]['address'], bbangs[i]['taste'], bbangs[i]['detail'], bbangs[i]['like'])
+                        }
+                    }
+                }
+            })
+        }
+
+        function makeCard(address, taste, detail, like) {
+            let tempHtml = `<div class="card"  style="width: 18rem;">
+                                <div class="card-body">
+                                    <p class="card-subtitle mb-2 text-muted">${address}</p>
+                                    <p class="card-text">${taste}</p>
+                                    <p class="card-text">${detail}</p>
+                                    <a href="#" onclick="likeBbang()" class="btn btn btn-success btn-sm">추천해요 ${like}
+                                    </a>
+                                    <a href="#" onclick="deleteBbang()" class="btn btn-secondary btn-sm">없어졌어요
+                                    </a>
+                                </div>
+                            </div>`
+            $('#card-box').append(tempHtml);
+
+        }
+
+        function likeBbang(address) {
+            $.ajax({
+                type: 'POST',
+                url: '/bbang/like',
+                data: {
+                    'address_give': address,
+                },
+                success: function (response) {
+                    if (response['result'] == 'success') {
+                        showBbang();
+                        window.location.reload();
+                    }
+                }
+            });
+        }
+    </script>
+
+
+</head>
+<body>
+<div class="wrap">
+    <div class="title-wrap">
+        <p class="title" style="text-align: center">우리 동네 붕어빵</p>
+        <p class="sub" style="text-align: center">가슴에 품고 있는 3천원. 우리 동네 붕어빵은 어디에 있을까?</p>
+
+        <div class="buttons" style="text-align: center">
+            <!--        <div class="select">-->
+            <!--            <select id="sido">-->
+            <!--                <option value="">시/도</option>-->
+            <!--            </select>-->
+            <!--            <select id="sigugun">-->
+            <!--                <option value="">구/군</option>-->
+            <!--            </select>-->
+            <button type="button" class="btn btn-primary btn-sm">검색</button>
+            <button onclick="openClose()" id="btn-info-box" type="button" class="btn btn-outline-primary btn-sm"> 붕어빵 위치
+                추가하기
+            </button>
+
+        </div>
+
+        <div class="form-post" id="info-box" style="display:none; font-size:15px">
+            <!--            <div class="select">-->
+            <!--                <select id="sido">-->
+            <!--                    <option value="">시/도</option>-->
+            <!--                </select>-->
+            <!--                <select id="sigugun">-->
+            <!--                    <option value="">구/군</option>-->
+            <!--                </select>-->
+            <!--            </div>-->
+            <!--            <p></p>-->
+            <div class="form-group">
+                <label for="info-address">상세 위치(동 / 주변 건물 / 지하철 출구 앞 등)</label>
+                <input id="info-address" class="form-control" style="font-size: 13px"
+                       placeholder="예) OO동 OO사거리 파리바게트 앞">
+            </div>
+            <div class="form-group">
+                <label for="info-taste">맛 종류 / 가격 정보</label>
+                <input id="info-taste" class="form-control" style="font-size: 13px"
+                       placeholder="예)팥붕 3개 2000원 / 슈붕 2개 2000원">
+            </div>
+            <div class="form-group">
+                <label for="info-detail">기타 정보</label>
+                <textarea id="info-detail" class="form-control" rows="2" style="font-size: 13px"
+                          placeholder="예)제 입에는 팥이 조금 달아요!&#13;&#10;조금 오래 걸려요!&#13;&#10;호떡 계란빵도 팔아요!"></textarea>
+            </div>
+            <div class="save-button">
+                <button type="button" class="btn btn-primary btn-sm" onclick="makeBbang()">추가하기</button>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="row" id="card-box">
+        <div class="card" style="width: 18rem;">
+            <div class="card-body">
+                <!--            <h5 class="card-title">OO시/도 OO구/군</h5>-->
+                <p class="card-subtitle mb-2 text-muted">상세 위치</p>
+                <p class="card-text">맛 종류 / 가격 정보</p>
+                <p class="card-text">기타 정보</p>
+                <a href="#" onclick="likeBbang()" class="btn btn btn-success btn-sm">추천해요
+                </a>
+                <a href="#" onclick="deleteBbang()" class="btn btn-secondary btn-sm">없어졌어요
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
