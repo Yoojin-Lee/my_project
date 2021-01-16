@@ -14,9 +14,13 @@ def home():  # 함수명 수정 - 이름만 보고 접속되는 페이지를 확
 def save_bbang():
 
     bbang = {
+        'sido': request.form['sido_give'],
+        'sigugun': request.form['sigugun_give'],
         'address': request.form['address_give'],
         'taste': request.form['taste_give'],
         'detail': request.form['detail_give'],
+        'like': 0,
+        'delete': 0
     }
     db.bbangs.insert_one(bbang)
     return jsonify({'result': 'success', 'msg': '감사합니다. 당신의 정보가 따뜻한 붕어빵을 선물했습니다.'})
@@ -29,9 +33,18 @@ def view_bbang():
 @app.route('/bbang/like', methods=['POST'])
 def like_bbang():
     address_receive = request.form['address_give']
-    address = db.bbangs.find_one({'address': address_receive})
-    new_like = address['like'] +1
+    spot = db.bbangs.find_one({'address': address_receive})
+    new_like = spot['like'] +1
     db.bbangs.update_one({'address': address_receive}, {'$set': {'like': new_like}})
+
+    return jsonify({'result': 'success'})
+
+@app.route('/bbang/delete', methods=['POST'])
+def delete_bbang():
+    address_receive = request.form['address_give']
+    spot_delete = db.bbangs.find_one({'address': address_receive})
+    new_delete = spot_delete['delete'] +1
+    db.bbangs.update_one({'address': address_receive}, {'$set': {'delete': new_delete}})
 
     return jsonify({'result': 'success'})
 
