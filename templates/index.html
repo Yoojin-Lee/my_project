@@ -85,7 +85,7 @@
 
         .card {
             width: 18rem;
-            height: 250px;
+            height: 370px;
             margin: auto;
             margin-bottom: 20px;
             padding-bottom: 20px;
@@ -253,8 +253,12 @@
                                 <div class="card-body">
                                     <h5 class="card-title">${sidoNm} ${sigugunNm}</h5>
                                     <p class="card-subtitle mb-2 text-muted">${address}</p>
-                                    <p class="card-text">${taste}</p>
-                                    <p class="card-text">${detail}</p>
+                                    <hr style="color: lightgray" align="center">
+                                    <p class="card-text" style="color: gray">맛&가격 </p>
+                                                                        <p>${taste}</p>
+                                    <hr style="color: lightgray" align="center">
+                                    <p class="card-text" style="color: gray">기타 정보 </p>
+                                    <p>${detail}</p>
                                 </div>
                                     <div class="button-box">
                                     <a href="#" onclick="likeBbang('${address}')" class="btn btn btn-warning btn-sm">추천해요 ${likeCount}

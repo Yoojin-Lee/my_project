@@ -1,9 +1,11 @@
 from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
+from config import MONGODB_URL, IP_ADDRESS
 
 app = Flask(__name__)
 
-client = MongoClient('localhost', 27017)
+# 수정하고 싶으면 MongoClient localhost, 27017로 바꾸기
+client = MongoClient(MONGODB_URL,27017)
 db = client.dbmyproject
 
 @app.route('/')
@@ -49,4 +51,4 @@ def delete_bbang():
     return jsonify({'result': 'success'})
 
 if __name__ == '__main__':
-    app.run('127.0.0.1', port=5000, debug=True)
+    app.run(IP_ADDRESS, port=5000, debug=True)

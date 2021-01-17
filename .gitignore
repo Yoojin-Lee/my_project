@@ -221,4 +221,7 @@ pip-selfcheck.json
 # Ignore all local history of files
 .history
 
+#환경변수 파일
+config.py
+
 # End of https://www.gitignore.io/api/flask,venv,visualstudiocode,jetbrains+all
