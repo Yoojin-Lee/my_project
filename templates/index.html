@@ -5,6 +5,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+    <meta property="og:title" content="우리 동네 붕어빵"/>
+    <meta property="og:description" content="가슴에 품고 있는 3천원. 우리 동네 붕어빵은 어디에 있을까?"/>
+    <meta property="og:image" content="{{ url_for('static', filename='007.png') }}"/>
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
           integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -23,6 +27,7 @@
     <link rel="shortcut icon" href="/static/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/static/favicon.ico" type="image/x-icon">
 
+
     <title>우리 동네 붕어빵</title>
 
     <style>
@@ -31,7 +36,7 @@
         }
 
         header {
-            background: url('static/006.png');
+            background: url('static/001.png');
             height: 400px;
             -webkit-background-size: cover;
             background-repeat: no-repeat;
@@ -336,8 +341,11 @@
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 150px">
                     <option value="">구/군</option>
                 </select>
-                <button type="button" class="btn btn-warning btn-sm" onclick="searchBbang()" style="vertical-align: bottom">검색</button>
-                <button onclick="openClose()" id="btn-info-box" type="button" class="btn btn-outline-dark btn-sm" style="vertical-align: bottom">
+                <button type="button" class="btn btn-warning btn-sm" onclick="searchBbang()"
+                        style="vertical-align: bottom">검색
+                </button>
+                <button onclick="openClose()" id="btn-info-box" type="button" class="btn btn-outline-dark btn-sm"
+                        style="vertical-align: bottom">
                     붕어빵 위치 추가하기
                 </button>
 
