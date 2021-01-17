@@ -36,14 +36,14 @@
             -webkit-background-size: cover;
             background-repeat: no-repeat;
             background-position: center center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .title-wrap {
-            width: 1920px;
-            height: 400px;
+            width: 600px;
             margin: auto;
-            display: table-cell;
-            vertical-align: middle;
             text-align: center;
         }
 
@@ -236,14 +236,13 @@
         }
 
 
-        function makeCard(sidoInfo, sigugunInfo, address, taste, detail, likeCount, deleteCount) {
+        function makeCard(sidoCode, sigugunCode, address, taste, detail, likeCount, deleteCount) {
 
-            let sidoIdx = hangjungdong.sido.findIndex(item => item.sido == sidoInfo)
+            let sidoIdx = hangjungdong.sido.findIndex(item => item.sido == sidoCode)
             let sidoNm = hangjungdong.sido[sidoIdx].codeNm;
 
-            let sigugunIdx = hangjungdong.sigugun.findIndex(item => item.sigugun == sigugunInfo)
+            let sigugunIdx = hangjungdong.sigugun.findIndex(item => item.sido == sidoCode && item.sigugun == sigugunCode)
             let sigugunNm = hangjungdong.sigugun[sigugunIdx].codeNm;
-
 
             let tempHtml = `<div class="card">
                                 <div class="card-body">
@@ -306,13 +305,11 @@
                     if (response['result'] == 'success') {
                         let sido_select = $('#search-sido').val();
                         let sigugun_select = $('#search-sigugun').val();
-                        let bbangs = response['bbang_list']; {
-                            for (i = 0; i < bbangs.length; i++) {
-                                if (sido_select == bbangs[i]['sido']) {
-                                    //같다면 카드를 보여줘? 같은 애만 카드를 만들어서 보여줘?
-                                    //makeCard 했더니 '부산광역시 동대문구' 이런 카드가 만들어짐.
-                                    //특정 데이터만 카드를 만들어줘서 보여줘..
-                                }
+                        let bbangs = response['bbang_list'];
+                        $('#card-box').empty();
+                        for (i = 0; i < bbangs.length; i++) {
+                            if (sido_select == bbangs[i]['sido'] && sigugun_select == bbangs[i]['sigugun']) {
+                                makeCard(bbangs[i]['sido'], bbangs[i]['sigugun'], bbangs[i]['address'], bbangs[i]['taste'], bbangs[i]['detail'], bbangs[i]['like'], bbangs[i]['delete'])
                             }
                         }
                     }
@@ -331,14 +328,16 @@
 
         <div class="buttons">
             <div class="select">
-                <select id="search-sido">
+                <select id="search-sido" type="button" class="btn btn-light btn-sm dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <option value="">시/도</option>
                 </select>
-                <select id="search-sigugun">
+                <select id="search-sigugun" type="button" class="btn btn-light btn-sm dropdown-toggle"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="width: 150px">
                     <option value="">구/군</option>
                 </select>
-                <button type="button" class="btn btn-warning btn-sm" onclick="searchBbang()">검색</button>
-                <button onclick="openClose()" id="btn-info-box" type="button" class="btn btn-outline-dark btn-sm">
+                <button type="button" class="btn btn-warning btn-sm" onclick="searchBbang()" style="vertical-align: bottom">검색</button>
+                <button onclick="openClose()" id="btn-info-box" type="button" class="btn btn-outline-dark btn-sm" style="vertical-align: bottom">
                     붕어빵 위치 추가하기
                 </button>
 
